@@ -93,7 +93,7 @@ class BloomFilter:
         # Using pandas to calculate the final values from the rest of the columns
         # makes the code run efficiently and fast
         df: pd.DataFrame = pd.DataFrame(data=data)
-        df['m'] = - (df['n']*df['fpr'].apply(math.log2)) / (math.log2(2) ** 2) 
+        df['m'] = - (df['n']*df['fpr'].apply(math.log)) / (math.log(2) ** 2) 
 
         ax = sns.lineplot(
             x='fpr', y='m', hue='n',
@@ -138,7 +138,7 @@ class BloomFilter:
         # Using pandas to calculate the final values from the rest of the columns
         # makes the code run efficiently and fast
         df: pd.DataFrame = pd.DataFrame(data=data)
-        df['k'] = math.log2(2) * df['m']/df['n']
+        df['k'] = math.log(2) * df['m']/df['n']
 
         ax = sns.lineplot(
             x='m', y='k', hue='n',
