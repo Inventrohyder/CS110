@@ -73,7 +73,7 @@ class TestCBF(unittest.TestCase):
         )
 
     def test_shakespeare(self):
-        s = Shakespeare()
+        s = Shakespeare('.shakespeare.txt')
         print(s.all_text)
 
 

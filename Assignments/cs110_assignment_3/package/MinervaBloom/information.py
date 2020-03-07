@@ -12,7 +12,7 @@ class BloomFilter:
     @staticmethod
     def probability_rate(
         # The size of the bit array
-        m_min: int = 100, m_max: int = 1000, m_step: int = 100,
+        m_min: int = 100, m_max: int = 1000, m_step: int = 10,
 
         # The number of hashing functions
         k_min: int = 1, k_max: int = 5, k_step: int = 1,
@@ -109,7 +109,7 @@ class BloomFilter:
         n_min: int = 10, n_max: int = 700, n_step: int = 15,
         
         # The size of the bit array
-        m_min: int = 100, m_max: int = 1000, m_step: int = 100,
+        m_min: int = 100, m_max: int = 1000, m_step: int = 10,
         
         title: str = "Optimum number of hash functions"
     ) -> None:
