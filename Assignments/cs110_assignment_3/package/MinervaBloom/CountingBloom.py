@@ -1,6 +1,7 @@
-import math         # To carry out some computations
-import numpy as np  # To generate the storage array
-import mmh3         # To generate the hashing functions
+import math                 # To carry out some computations
+import numpy as np          # To generate the storage array
+import mmh3                 # To generate the hashing functions
+from typing import List     # To allow type hinting
 
 
 class CountingBloomFilter(object):
@@ -61,26 +62,36 @@ class CountingBloomFilter(object):
         k_opt = memory_size * (0.2037 * threshold + 0.9176) / num_item
         return k_opt
 
-    def hash_cbf(self, item):
+    def hash_cbf(self, item: object) -> List:
         """
         Returns hash values of an item
-        [ADD ADDITIONAL DESCRIPTION, IF NEED BE]
+        
+        Parameters
+        ----------
+        item: the item to hash
+        
+        Returns
+        -------
+        A list of hashes
         """
-        pass
+        
+        hashes = [mmh3.hash(item, i+1) for i in range(self.functions_qty)]
+        return hashes
+            
 
-    def search(self, item):
+    def search(self, item: object):
         """
         [YOUR FUNCTION DESCRIPTION]
         """
         pass
 
-    def insert(self, item):
+    def insert(self, item: object):
         """
         [YOUR FUNCTION DESCRIPTION]
         """
         pass
 
-    def delete(self, item):
+    def delete(self, item: object):
         """
         [YOUR FUNCTION DESCRIPTION]
         """
