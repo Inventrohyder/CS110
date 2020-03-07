@@ -8,7 +8,9 @@ setuptools.setup(
     description="Package created for my 3rd CS110 assignment",
     install_requires=[
         'pandas',
-        'seaborn'
+        'seaborn',
+        'mmh3',
+        'numpy'
     ],
     packages=setuptools.find_packages()
 )
