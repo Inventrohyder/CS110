@@ -26,7 +26,7 @@ class CountingBloomFilter(object):
         self.threshold = threshold
         self.size = CountingBloomFilter.bit_array_size(num_item, fpr)
         self.functions_qty = CountingBloomFilter.hash_functions(
-            self.size, num_item)
+            self.size, num_item, threshold)
         self.array = np.zeros(self.size)
 
     @staticmethod
@@ -40,7 +40,7 @@ class CountingBloomFilter(object):
         fpr: The false probability rate to stay under
         """
         m = - (num_item * math.log(fpr)) / (math.log(2) ** 2)
-        return m
+        return int(m)
 
     @staticmethod
     def hash_functions(memory_size: int, num_item: int, threshold: int) -> int:
