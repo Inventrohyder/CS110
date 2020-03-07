@@ -146,3 +146,12 @@ class BloomFilter:
         )
 
         ax.set_title(title)
+        
+
+class Shakespeare:
+    
+    def __init__(self, filename: str):
+        with open(filename, "r") as txt_file:
+            entries = txt_file.read().split(' ')
+            lines = [string.replace('\n', '') for string in entries]
+            self.all_text = [line for line in lines if line != ''] 

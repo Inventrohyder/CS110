@@ -1,4 +1,4 @@
-from MinervaBloom import CountingBloomFilter
+from MinervaBloom import CountingBloomFilter, Shakespeare
 import unittest
 
 
@@ -71,6 +71,10 @@ class TestCBF(unittest.TestCase):
             self.cbf.search('chicken') or self.cbf.search('cow'),
             "'chicken' and 'cow' should not be stored"
         )
+
+    def test_shakespeare(self):
+        s = Shakespeare()
+        print(s.all_text)
 
 
 
