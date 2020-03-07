@@ -79,20 +79,48 @@ class CountingBloomFilter(object):
         return hashes
             
 
-    def search(self, item: object):
+    def search(self, item: object) -> bool:
         """
-        [YOUR FUNCTION DESCRIPTION]
+        Check's if an item is stored in the CBF
+        
+        Parameters
+        ----------
+        item: The item to search for
         """
-        pass
+        indexes = [i%self.size for i in self.hash_cbf(item)]
+        
+        # Using numpy vector operations check if all the indexes are
+        # greater than the threshold
+        return (self.array[indexes] > self.threshold).all()
 
-    def insert(self, item: object):
+    def insert(self, item: object) -> None:
         """
-        [YOUR FUNCTION DESCRIPTION]
+        Insert's an item into the cbf storage
+        
+        Parameter
+        ---------
+        item: The object to insert
         """
-        pass
+        indexes = [i%self.size for i in self.hash_cbf(item)]
+        
+        # Use numpy vector operations to speed up updates
+        self.array[indexes] += 1
+            
 
-    def delete(self, item: object):
+    def delete(self, item: object) -> bool:
         """
-        [YOUR FUNCTION DESCRIPTION]
+        Delete's an item only if it already exists
+        
+        Parameter
+        ---------
+        item: The item to search for and delete
+        
+        Return
+        ------
+        True if deleted and False if not deleted
         """
-        pass
+        if self.search(item):
+            indexes = [i%self.size for i in self.hash_cbf(item)]
+            self.array[indexes] -= 1
+            return True
+        return False
