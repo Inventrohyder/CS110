@@ -41,11 +41,37 @@ class TestCBF(unittest.TestCase):
             self.cbf.search('chicken'),
             "'chicken' was added"
         )
+        self.assertTrue(
+            self.cbf.delete('chicken'),
+            "'chicken' should be deleted"
+        )
+        self.assertFalse(
+            self.cbf.delete('cow'),
+            "'cow' should not be deleted"
+        )
+        self.assertFalse(
+            self.cbf.search('chicken') or self.cbf.search('cow'),
+            "'chicken' and 'cow' should not be stored"
+        )
+
+    def test_multi_insert(self):
+        self.cbf.insert('cow')
+        self.cbf.insert('chicken')
+        self.assertTrue(
+            self.cbf.search('chicken') and self.cbf.search('cow'),
+            "'chicken' and 'cow' should be stored"
+        )
+        self.cbf.delete('cow')
+        self.assertTrue(
+            self.cbf.search('chicken') and not self.cbf.search('cow'),
+            "'chicken' should be stored and 'cow' should not be"
+        )
         self.cbf.delete('chicken')
         self.assertFalse(
-            self.cbf.search('chicken'),
-            "'chicken' was deleted"
+            self.cbf.search('chicken') or self.cbf.search('cow'),
+            "'chicken' and 'cow' should not be stored"
         )
+
 
 
 if __name__ == '__main__':
