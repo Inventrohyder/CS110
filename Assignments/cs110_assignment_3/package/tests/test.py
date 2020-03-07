@@ -3,7 +3,7 @@ import unittest
 
 
 class TestCBF(unittest.TestCase):
-    
+
     def setUp(self):
         self.cbf = CountingBloomFilter(10, 0.1)
 
@@ -21,7 +21,7 @@ class TestCBF(unittest.TestCase):
             test_fpr,
             "The intended fpr to stay under is incorrect"
         )
-        
+
     def test_hashing(self):
         hashes_1 = self.cbf.hash_cbf('chicken')
         hashes_2 = self.cbf.hash_cbf('chicken')
@@ -29,6 +29,22 @@ class TestCBF(unittest.TestCase):
             hashes_1,
             hashes_2,
             "After hashing the same object twice the hashes are different"
+        )
+
+    def test_insertion_deletion(self):
+        self.assertFalse(
+            self.cbf.search('chicken'),
+            "'chicken' wasn't inserted yet"
+        )
+        self.cbf.insert('chicken')
+        self.assertTrue(
+            self.cbf.search('chicken'),
+            "'chicken' was added"
+        )
+        self.cbf.delete('chicken')
+        self.assertFalse(
+            self.cbf.search('chicken'),
+            "'chicken' was deleted"
         )
 
 

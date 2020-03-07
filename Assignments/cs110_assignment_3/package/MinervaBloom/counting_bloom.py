@@ -91,7 +91,7 @@ class CountingBloomFilter(object):
         
         # Using numpy vector operations check if all the indexes are
         # greater than the threshold
-        return (self.array[indexes] > self.threshold).all()
+        return (self.array[indexes] >= self.threshold).all()
 
     def insert(self, item: object) -> None:
         """
