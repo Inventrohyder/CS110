@@ -42,7 +42,7 @@ class CountingBloomFilter(object):
         return m
 
     @staticmethod
-    def hash_functions(memory_size: int, num_item: int) -> int:
+    def hash_functions(memory_size: int, num_item: int, threshold: int) -> int:
         """
         Calculates the optimum number of hashing functions
 
