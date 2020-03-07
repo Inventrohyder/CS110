@@ -60,7 +60,7 @@ class CountingBloomFilter(object):
 
         # The formul is from Kim et al. 2019 (https://www.mdpi.com/2079-9292/8/7/779/htm)
         k_opt = memory_size * (0.2037 * threshold + 0.9176) / num_item
-        return k_opt
+        return int(k_opt)
 
     def hash_cbf(self, item: object) -> List:
         """
@@ -75,7 +75,7 @@ class CountingBloomFilter(object):
         A list of hashes
         """
         
-        hashes = [mmh3.hash(item, i+1) for i in range(self.functions_qty)]
+        hashes = [mmh3.hash(item, i) for i in range(self.functions_qty)]
         return hashes
             
 
