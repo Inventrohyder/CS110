@@ -1,5 +1,6 @@
-# Feel free to define additional classes that you think are helpful 
-# in building this class of CountingBloomFilter 
+import math
+
+
 
 class CountingBloomFilter(object):
     """
@@ -31,7 +32,21 @@ class CountingBloomFilter(object):
         pass
     
     @staticmethod
-    def bit_array_size(memory_size: int, num_item: int, threshold: int = 1) -> int:
+    def bit_array_size(num_item: int, fpr: float) -> int:
+        """
+        Provides the optimum size of an array to stay under a certain fpr
+        
+        Parameters
+        ----------
+        num_item: The intended number of items to store
+        fpr: The false probability rate to stay under
+        """
+        m = - (num_item * math.log(fpr)) / (math.log(2) ** 2)
+        return m
+    
+    
+    @staticmethod
+    def hash_functions(memory_size: int, num_item: int) -> int:
         """
         Calculates the optimum number of hashing functions
         
