@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 
 
@@ -18,18 +19,12 @@ class CountingBloomFilter(object):
         num_item: The approximate number of items that the CBF will be used to store
         fpr: The desired fpr to stay below
         """
-        """
-        /YOUR ARGUMENTS/ are the two parameters of your choice from the 
-        following parameters of a CBF:
-        - fpr: float, false positive rate
-        - memory_size: int, memory size
-        - num_item: int, number of items stored
-        - num_hashfn: int, number of hash functions
-        
-        For example, if you choose fpr and memory_size, edit your __init__ to
-        `def __init__(self, memory_size, fpr)`
-        """
-        pass
+        self.fpr = fpr
+        self.intended_item_qty = num_item
+        self.threshold = threshold
+        self.size = CountingBloomFilter.bit_array_size(num_item, fpr)
+        self.functions_qty = CountingBloomFilter.hash_functions(self.size, num_item)
+        self.array = np.zeros(self.size)
     
     @staticmethod
     def bit_array_size(num_item: int, fpr: float) -> int:
