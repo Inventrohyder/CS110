@@ -12,7 +12,7 @@ class CountingBloomFilter(object):
     - delete: removes a string from the filter 
     """
 
-    def __init__(self, num_item: int, fpr: float, threshold: int = 1, filename:str = None) -> None:
+    def __init__(self, num_item: int, fpr: float, threshold: int = 1) -> None:
         """
         Initializes an empty CBF
 
@@ -27,11 +27,7 @@ class CountingBloomFilter(object):
         self.size = CountingBloomFilter.bit_array_size(num_item, fpr)
         self.functions_qty = CountingBloomFilter.hash_functions(
             self.size, num_item, threshold)
-        self.array = np.zeros(self.size)
-        self.filename = filename
-        
-        if filename:
-            self.insert_from_file(filename)    
+        self.array = np.zeros(self.size)    
 
     @staticmethod
     def bit_array_size(num_item: int, fpr: float) -> int:
