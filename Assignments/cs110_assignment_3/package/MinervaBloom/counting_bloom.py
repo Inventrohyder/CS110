@@ -4,6 +4,7 @@ import mmh3                 # To generate the hashing functions
 from typing import List     # To allow type hinting
 import seaborn as sns       # To plot analyses graphs 
 import pandas as pd         # To store values and allow easy plotting
+import time                 # To access the running times
 
 
 class CountingBloomFilter(object):
@@ -230,4 +231,56 @@ class CountingBloomFilter(object):
             data=df
         )
 
-        ax.set_title(title)      
+        ax.set_title(title)
+    
+    @staticmethod
+    def time_analysis(
+        words: List,
+        min_n: int = 10,
+        step_n: int = 10,
+        fpr: float = 0.25,
+        reps: int = 10,
+        title: str = 'Graph showing the average access times of hashed values given different quantities of stored values'
+    ) -> None:
+        """
+        Plots a graph showing the access time to hashed values the number of items stored
+        
+        Parameters
+        ----------
+        words: The words to insert into different CBF's also representing the maximum
+            number of words that can be inserted into a cbf
+        min_n: The lowest number of words to consider
+        step_n: The difference between different iterations in n
+        fpr: The error rate considered as a a constant
+        reps: The number of times to iterate the calculations
+        title: The intended title of the plot
+        """
+        
+        data: dict = {"n": [], "average_time": []}
+            
+        for n in range(min_n, len(words), step_n):
+            current_total_average: float = 0.0
+            for i in range(reps):
+                inputs = words[:n]
+                cbf = CountingBloomFilter(n, fpr)
+                for word in inputs:
+                    cbf.insert(word)
+                total_access_times: float = 0.0
+                for word in inputs:
+                    start = time.time()
+                    cbf.search(word)
+                    total_access_times += time.time() - start
+                current_total_average += total_access_times/len(inputs) 
+            data['n'].extend([n])   
+            data["average_time"].extend([current_total_average/reps])
+
+        # Using pandas to calculate the final values from the rest of the columns
+        # makes the code run efficiently and fast
+        df: pd.DataFrame = pd.DataFrame(data=data)
+
+        ax = sns.lineplot(
+            x='n', y='average_time',
+            data=df
+        )
+
+        ax.set_title(title)
