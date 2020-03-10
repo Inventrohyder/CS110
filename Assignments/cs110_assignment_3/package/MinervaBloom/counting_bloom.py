@@ -2,6 +2,8 @@ import math                 # To carry out some computations
 import numpy as np          # To generate the storage array
 import mmh3                 # To generate the hashing functions
 from typing import List     # To allow type hinting
+import seaborn as sns       # To plot analyses graphs 
+import pandas as pd         # To store values and allow easy plotting
 
 
 class CountingBloomFilter(object):
@@ -122,3 +124,41 @@ class CountingBloomFilter(object):
             self.array[indexes] -= 1
             return True
         return False
+    
+    @staticmethod
+    def fpr_m_analysis(
+        n:int, 
+        min_fpr:int = 5, max_fpr: int = 75, step_fpr: int = 5,  # In percentage
+        title: str = 'Graph of the scaling between fpr and m'
+    ) -> None:
+        """
+        Plots a graph showing the relationship between fpr and m
+        
+        Parameters
+        ----------
+        n: The intended number of items to insert in to the CBF
+        min_fpr: The smallest false error rate to consider
+        max_fpr: The highest false error rate to consider
+        step_fpr: The difference between different iterations in fpr
+        title: The intended title of the plot
+        """
+        
+        data: dict = {"fpr": [], "m": []}
+            
+        for fpr in range(min_fpr, max_fpr, step_fpr):
+            error_rate = fpr/100  # Convert the value to a decimal
+            data["fpr"].extend([error_rate])  
+            data["m"].extend([CountingBloomFilter(n, error_rate).size])
+
+        # Using pandas to calculate the final values from the rest of the columns
+        # makes the code run efficiently and fast
+        df: pd.DataFrame = pd.DataFrame(data=data)
+
+        ax = sns.lineplot(
+            x='fpr', y='m',
+            data=df
+        )
+
+        ax.set_title(title)
+        
+        
