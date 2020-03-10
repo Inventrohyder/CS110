@@ -161,4 +161,39 @@ class CountingBloomFilter(object):
 
         ax.set_title(title)
         
+    @staticmethod
+    def n_m_analysis(
+        fpr: float,
+        min_n:int = 10, max_n:int = 10000, step_n: int = 10,
+        title: str = 'Graph of the scaling between n and m'
+    ) -> None:
+        """
+        Plots a graph showing the relationship between n and m
+        
+        Parameters
+        ----------
+        fpr: The intended error rate to maintain
+        min_n: The smallest input size to consider
+        max_n: The highest input size to consider
+        step_n: The difference in n between different iterations
+        title: The intended title of the plot
+        """
+        
+        data: dict = {"n": [], "m": []}
+            
+        for n in range(min_n, max_n, step_n):
+            data["n"].extend([n])  
+            data["m"].extend([CountingBloomFilter(n, fpr).size])
+
+        # Using pandas to calculate the final values from the rest of the columns
+        # makes the code run efficiently and fast
+        df: pd.DataFrame = pd.DataFrame(data=data)
+
+        ax = sns.lineplot(
+            x='n', y='m',
+            data=df
+        )
+
+        ax.set_title(title)
+        
         
