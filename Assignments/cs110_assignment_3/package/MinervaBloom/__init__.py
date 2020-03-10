@@ -1,2 +1,2 @@
-from .information import Shakespeare, BloomFilter
+from .information import BloomFilter
 from .counting_bloom import CountingBloomFilter

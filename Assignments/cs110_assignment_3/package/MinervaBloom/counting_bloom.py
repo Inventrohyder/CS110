@@ -12,7 +12,7 @@ class CountingBloomFilter(object):
     - delete: removes a string from the filter 
     """
 
-    def __init__(self, num_item: int, fpr: float, threshold: int = 1) -> None:
+    def __init__(self, num_item: int, fpr: float, threshold: int = 1, filename:str = None) -> None:
         """
         Initializes an empty CBF
 
@@ -28,6 +28,10 @@ class CountingBloomFilter(object):
         self.functions_qty = CountingBloomFilter.hash_functions(
             self.size, num_item, threshold)
         self.array = np.zeros(self.size)
+        self.filename = filename
+        
+        if filename:
+            self.insert_from_file(filename)    
 
     @staticmethod
     def bit_array_size(num_item: int, fpr: float) -> int:
@@ -76,8 +80,7 @@ class CountingBloomFilter(object):
         """
         
         hashes = [mmh3.hash(item, i) for i in range(self.functions_qty)]
-        return hashes
-            
+        return hashes          
 
     def search(self, item: object) -> bool:
         """
@@ -106,7 +109,6 @@ class CountingBloomFilter(object):
         # Use numpy vector operations to speed up updates
         self.array[indexes] += 1
             
-
     def delete(self, item: object) -> bool:
         """
         Delete's an item only if it already exists
