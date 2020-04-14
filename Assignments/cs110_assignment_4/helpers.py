@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def longest_common_subsequence(x, y):
     """
     Gives the length of the longest common substring between strings x and y
@@ -13,13 +14,9 @@ def longest_common_subsequence(x, y):
     n = len(y)
 
     # declaring the array for storing the dp values
-    L = np.matrix(
-        np.zeros(
-            (m+1, n+1)
-        )
-    )
+    L = np.zeros((m + 1, n + 1))
 
-    # iterate through each subproblem
+    # iterate through each sub problem
     for i in range(m+1):
         for j in range(n+1):
             if i == 0 or j == 0 :
