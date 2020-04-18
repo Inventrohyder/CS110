@@ -79,3 +79,31 @@ def generate_lcs_matrix(verbose=True):
     if verbose:
         print(pd.DataFrame(m, index=labels, columns=labels))
     return m
+
+
+def relative_lcs_matrix(c, strings):
+    """
+    Generates a relative lcs matrix by dividing the lcs by the
+    length of the given string
+    :param c: The un-normalized lcs matrix
+    :param strings: The set-strings used to generate the matrix c
+    :return: a matrix with normalized lcs
+    """
+    m = np.copy(c)
+    for i in range(len(strings)):
+        m[i] = m[i] / len(strings[i])
+    return m
+
+
+def generate_relative_lcs(c, verbose=True):
+    """
+    Generate the relative lcs matrix of the DNA substrings
+    :param c: the matrix with un-normalized lcs values
+    :param verbose: should we print a DataFrame representation of the matix
+    :return: an array of arrays containing the relative lcs values
+    """
+    labels, strings = zip(*Set_Strings)
+    m = relative_lcs_matrix(c, strings)
+    if verbose:
+        print(pd.DataFrame(m, index=labels, columns=labels))
+    return m
