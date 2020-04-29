@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from scipy.stats import rankdata
 
 # The DNA Strings saved as an immutable tuple
 # since we wouldn't be changing its values
@@ -99,11 +100,37 @@ def generate_relative_lcs(c, verbose=True):
     """
     Generate the relative lcs matrix of the DNA substrings
     :param c: the matrix with un-normalized lcs values
-    :param verbose: should we print a DataFrame representation of the matix
+    :param verbose: should we print a DataFrame representation of the matrix
     :return: an array of arrays containing the relative lcs values
     """
     labels, strings = zip(*Set_Strings)
     m = relative_lcs_matrix(c, strings)
+    if verbose:
+        print(pd.DataFrame(m, index=labels, columns=labels))
+    return m
+
+
+def rank_matrix(c):
+    """
+    Ranks the values in the matrix
+    :param c: the matrix to rank values of
+    :return: a matrix containing the ranked values
+    """
+    m = np.copy(c)
+    for i in range(len(m)):
+        m[i] = len(m[i]) - rankdata(m[i])  # reverse the ranks (to be highest to lowest)
+    return m
+
+
+def generate_rank_matrix(c, verbose=True):
+    """
+    Generates a rank matrix of C
+    :param c: the matrix to rank
+    :param verbose: should we print a DataFrame representation of the matrix
+    :return: an array of arrays containing ranked values
+    """
+    labels, strings = zip(*Set_Strings)
+    m = rank_matrix(c)
     if verbose:
         print(pd.DataFrame(m, index=labels, columns=labels))
     return m
