@@ -174,3 +174,20 @@ def generate_genealogy(dna_strings, verbose=True):
     output = sorted(sums, reverse=True)
 
     return output
+
+
+def insertion_probability(parent, child, verbose=True):
+    """
+    Find the probability of insertion
+    :param parent: the parent string
+    :param child: the child string
+    :param verbose: should intermediate values be printed out
+    :return: the probability of insertion
+    """
+    lcs = longest_common_subsequence(parent[1], child[1])  # The second value is the DNA string
+    probability = (len(child[1]) - lcs) / len(parent[1])
+    if verbose:
+        print(f"Length of the parent: {len(parent[1])}")
+        print(f"Length of the child: {len(child[1])}")
+        print(f"Lcs: {lcs}")
+    return probability
