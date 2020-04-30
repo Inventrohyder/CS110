@@ -136,17 +136,41 @@ def generate_rank_matrix(c, verbose=True):
     return m
 
 
-def obtain_row_sums(c, verbose=True):
+def obtain_row_sums(c, verbose=True, strings=Set_Strings):
     """
     Sums up the values in the matrix c row by row
     :param c: the matrix of relative lcs that we should find the sums of
     :param verbose: should we print a DataFrame representation of the matrix
+    :param strings: the DNA strings to generate the sums
     :return: an array of arrays containing the sum of relative lcs values
     """
-    labels, strings = zip(*Set_Strings)
+    labels, strings = zip(*strings)
     m = list()
     for i, row in enumerate(c):
         m.append((sum(row), labels[i]))
     if verbose:
-        print(pd.DataFrame(m, index=labels, columns=["Sum","labels"])[["Sum"]])
+        print(pd.DataFrame(m, index=labels, columns=["Sum", "labels"])[["Sum"]])
     return m
+
+
+def generate_genealogy(dna_strings, verbose=True):
+    """
+    Generate a genealogy tree from the DNA strings passed as input
+    :param dna_strings: DNA strings in the form (label, DNA)
+    :param verbose: should the intermediate values be printed out
+    :return: A genealogical tree
+    """
+    labels, strings = zip(*dna_strings)
+
+    # LCS matrix
+    m = lcs_matrix(strings)
+
+    # Relative lcs matrix
+    m = relative_lcs_matrix(m, strings)
+
+    # Obtain the sums
+    sums = obtain_row_sums(m, strings=dna_strings, verbose=verbose)
+
+    output = sorted(sums, reverse=True)
+
+    return output
