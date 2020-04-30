@@ -146,7 +146,7 @@ def obtain_row_sums(c, verbose=True):
     labels, strings = zip(*Set_Strings)
     m = list()
     for i, row in enumerate(c):
-        m.append((sum(row), labels[i]))
+        m.append((-sum(row), labels[i]))
     if verbose:
         print(pd.DataFrame(m, index=labels, columns=["Sum","labels"])[["Sum"]])
     return m
