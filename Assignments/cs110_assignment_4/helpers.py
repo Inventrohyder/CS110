@@ -134,3 +134,19 @@ def generate_rank_matrix(c, verbose=True):
     if verbose:
         print(pd.DataFrame(m, index=labels, columns=labels))
     return m
+
+
+def obtain_row_sums(c, verbose=True):
+    """
+    Sums up the values in the matrix c row by row
+    :param c: the matrix of relative lcs that we should find the sums of
+    :param verbose: should we print a DataFrame representation of the matrix
+    :return: an array of arrays containing the sum of relative lcs values
+    """
+    labels, strings = zip(*Set_Strings)
+    m = list()
+    for i, row in enumerate(c):
+        m.append((labels[i], sum(row)))
+    if verbose:
+        print(pd.DataFrame(m, index=labels, columns=["labels", "Sum"])[["Sum"]])
+    return m
