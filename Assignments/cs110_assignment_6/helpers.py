@@ -1,31 +1,4 @@
-def rh_get_match(x, y, k, d=7, q=9):
-    """
-    Finds all common length-k substrings of x and y
-    using rolling hashing on both strings.
-    :param x: first string
-    :param y: second string
-    :param k: int, length of substring
-    :param d: the base number to use in the rolling hash function
-    :param q: the number used to divide and generate the hash value
-    :return: A list of tuples (i, j) where x[i:i+k] = y[j:j+k]
-    """
-    n = len(x)
-    m = len(y)
-
-    output = list()
-
-    for i in range(n - k + 1):
-        matches = rabin_karp_matcher(
-            target=y,
-            potential=x[i:i + k],
-            d=d,
-            q=q
-        )
-
-        for match in matches:
-            output.append((i, match))
-
-    return output
+import mmh3
 
 
 def rabin_karp_matcher(target, potential, d, q):
@@ -59,3 +32,82 @@ def rabin_karp_matcher(target, potential, d, q):
             current_target_hash = (d * (current_target_hash - ord(target[s + 1]) * h) + ord(target[s + m + 1])) % q
 
     return occurrences
+
+
+def rh_get_match(x, y, k, d=7, q=9):
+    """
+    Finds all common length-k substrings of x and y
+    using rolling hashing on both strings.
+    :param x: first string
+    :param y: second string
+    :param k: int, length of substring
+    :param d: the base number to use in the rolling hash function
+    :param q: the number used to divide and generate the hash value
+    :return: A list of tuples (i, j) where x[i:i+k] = y[j:j+k]
+    """
+    n = len(x)
+    m = len(y)
+
+    output = list()
+
+    for i in range(n - k + 1):
+        matches = rabin_karp_matcher(
+            target=y,
+            potential=x[i:i + k],
+            d=d,
+            q=q
+        )
+
+        for match in matches:
+            output.append((i, match))
+
+    return output
+
+
+def non_rolling_matcher(target, potential):
+    """
+    Finds if a substring is present in a target string without rolling
+    hashes
+    :param target: the target string
+    :param potential: the string to detect presence of; the string potentially present
+    :return: the positions the substring is present in the target string
+    """
+    n = len(target)
+    m = len(potential)
+
+    p = mmh3.hash(potential)
+
+    occurrences = list()
+
+    for s in range(n - m + 1):
+        if p == mmh3.hash(target[s:s + m]):
+            if potential == target[s: s + m]:
+                occurrences.append(s)
+
+    return occurrences
+
+
+def regular_get_match(x, y, k):
+    """
+    Finds all common length-k substrings of x and y
+    NOT using rolling hashing on both strings.
+    :param x: first string
+    :param y: second string
+    :param k: int, length of substring
+    :return: A list of tuples (i, j) where x[i:i+k] = y[j:j+k]
+    """
+    n = len(x)
+    m = len(y)
+
+    output = list()
+
+    for i in range(n - k + 1):
+        matches = non_rolling_matcher(
+            target=y,
+            potential=x[i:i + k]
+        )
+
+        for match in matches:
+            output.append((i, match))
+
+    return output

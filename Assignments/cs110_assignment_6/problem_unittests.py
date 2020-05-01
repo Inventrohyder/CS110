@@ -60,7 +60,7 @@ def test_rabin_karp(func):
     _print_success_message()
 
 
-def test_rh_get_match(func):
+def test_matcher(func):
     x = "day"
     y = "today is monday"
 
