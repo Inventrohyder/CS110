@@ -15,7 +15,7 @@ def _print_success_message():
     print('Tests Passed!')
 
 
-def test_lcs(lcs_function):
+def test_lcs(func):
     # The pairs to find LCS values for
     pairs = [  # LCS values:
         ('ABCBDAB', 'BDCABA'),  # 4
@@ -29,7 +29,7 @@ def test_lcs(lcs_function):
     results = []
 
     for pair in pairs:
-        results.append(lcs_function(*pair))
+        results.append(func(*pair))
 
     # check correct results
     assert all(np.isclose(results, lcs_vals, rtol=1e-05)), 'LCS calculations are incorrect.'
@@ -37,7 +37,7 @@ def test_lcs(lcs_function):
     _print_success_message()
 
 
-def test_rabin_karp(rabin_karp_func):
+def test_rabin_karp(func):
     target = "today is monday"
     substrings = ("day", "o", "is", "ay")
 
@@ -49,12 +49,36 @@ def test_rabin_karp(rabin_karp_func):
     ]
 
     for i, substring in enumerate(substrings):
-        output = rabin_karp_func(
+        output = func(
             target=target,
             potential=substring,
             d=7,
             q=10
         )
-        assert (output == values[i], f"{substring} mismatched for {output} in {target}")
+        assert output == values[i], f"{substring} mismatched for {output} in {target}"
+
+    _print_success_message()
+
+
+def test_rh_get_match(func):
+    x = "day"
+    y = "today is monday"
+
+    k_s = [1, 2, 3, 4]
+    expected = [
+        [(0, 2), (0, 12), (1, 3), (1, 13), (2, 4), (2, 14)],  # 1
+        [(0, 2), (0, 12), (1, 3), (1, 13)],  # 2
+        [(0, 2), (0, 12)],  # 3
+        [],  # 4
+    ]
+
+    for i, k in enumerate(k_s):
+        output = func(
+            x,
+            y,
+            k
+        )
+
+        assert output == expected[i], "Incorrect outputs"
 
     _print_success_message()

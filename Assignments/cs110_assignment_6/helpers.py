@@ -1,12 +1,31 @@
-def rh_get_match(x, y, k):
+def rh_get_match(x, y, k, d=7, q=9):
     """
     Finds all common length-k substrings of x and y
     using rolling hashing on both strings.
     :param x: first string
     :param y: second string
     :param k: int, length of substring
+    :param d: the base number to use in the rolling hash function
+    :param q: the number used to divide and generate the hash value
     :return: A list of tuples (i, j) where x[i:i+k] = y[j:j+k]
     """
+    n = len(x)
+    m = len(y)
+
+    output = list()
+
+    for i in range(n - k + 1):
+        matches = rabin_karp_matcher(
+            target=y,
+            potential=x[i:i + k],
+            d=d,
+            q=q
+        )
+
+        for match in matches:
+            output.append((i, match))
+
+    return output
 
 
 def rabin_karp_matcher(target, potential, d, q):
