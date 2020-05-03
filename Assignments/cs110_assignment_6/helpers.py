@@ -1,4 +1,4 @@
-import mmh3
+import hashing
 import numpy as np
 
 
@@ -65,23 +65,30 @@ def rh_get_match(x, y, k, d=7, q=9):
     return output
 
 
-def non_rolling_matcher(target, potential):
+def non_rolling_matcher(target, potential, table_size="automatic", hash_func=hashing.hash_str4):
     """
     Finds if a substring is present in a target string without rolling
     hashes
     :param target: the target string
     :param potential: the string to detect presence of; the string potentially present
+    :param table_size: the number of elements the hash table can store
+    :param hash_func: the hashing function to use
     :return: the positions the substring is present in the target string
     """
     n = len(target)
     m = len(potential)
 
-    p = mmh3.hash(potential)
+    if table_size == "automatic":
+        hash_table = hashing.empty_hash_table(n * m)
+    else:
+        hash_table = hashing.empty_hash_table(table_size)
+
+    hashing.add_to_hash_table(hash_table, potential, hash_func)
 
     occurrences = list()
 
     for s in range(n - m + 1):
-        if p == mmh3.hash(target[s:s + m]):
+        if hashing.contains(hash_table, target[s: s + m], hash_func):
             if potential == target[s: s + m]:
                 occurrences.append(s)
 
