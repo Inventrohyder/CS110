@@ -1,0 +1,11 @@
+,scores
+Nearest Neighbors,0.88
+Linear SVM,0.92
+RBF SVM,0.6
+Gaussian Process,0.56
+Decision Tree,0.92
+Random Forest,0.92
+Neural Net,0.84
+AdaBoost,0.88
+Naive Bayes,0.88
+QDA,0.84
